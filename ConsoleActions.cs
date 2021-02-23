@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using Bam.Net.Automation;
 using Bam.Net.CommandLine;
+using Bam.Net.Data.SQLite;
 using Bam.Net.Encryption;
 
 namespace Bam.Net
 {
     public class ConsoleActions : CommandLineTool
     {
-        [ConsoleAction("load", "Load json or yaml key values into a vault")]
+        [ConsoleAction("load", "Load json or yaml key value pairs into a vault")]
         public void LoadDictionary()
         {
             string toLoad = GetArgumentOrDefault("load", string.Empty);
@@ -31,6 +32,8 @@ namespace Bam.Net
             string specifiedVault = GetArgumentOrDefault("vault", "Profile");
             Vault vault = GetTarget(specifiedVault);
 
+            Message.PrintLine("Loading values from {0} into {1}.", ConsoleColor.Cyan, toLoadFile.FullName, ((SQLiteDatabase)vault.Database).DatabaseFile.FullName);
+            
             Dictionary<string, string> test = toLoadFile.FromFile<Dictionary<string, string>>();
             test.Keys.Each(key => vault.Set(key, test[key]));
             if (Arguments.Contains("delete"))
