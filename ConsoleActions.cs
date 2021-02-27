@@ -10,35 +10,35 @@ namespace Bam.Net
 {
     public class ConsoleActions : CommandLineTool
     {
-        [ConsoleAction("load", "Load json or yaml key value pairs into a vault")]
-        public void LoadDictionary()
+        [ConsoleAction("import", "Import json or yaml key value pairs into a vault")]
+        public void ImportDictionary()
         {
-            string toLoad = GetArgumentOrDefault("load", string.Empty);
-            if (string.IsNullOrEmpty(toLoad) || !File.Exists(toLoad))
+            string toImport = GetArgumentOrDefault("import", string.Empty);
+            if (string.IsNullOrEmpty(toImport) || !File.Exists(toImport))
             {
-                string fileName = string.IsNullOrEmpty(toLoad) ? "load.json" : toLoad;
-                toLoad = Path.Combine(BamProfile.DataPath, fileName);
-                if (!File.Exists(toLoad))
+                string fileName = string.IsNullOrEmpty(toImport) ? "import.json" : toImport;
+                toImport = Path.Combine(BamProfile.DataPath, fileName);
+                if (!File.Exists(toImport))
                 {
-                    toLoad = Path.Combine(BamProfile.DataPath, "load.yaml");
+                    toImport = Path.Combine(BamProfile.DataPath, "import.yaml");
                 }
             }
-            FileInfo toLoadFile = new FileInfo(toLoad);
-            if (!toLoadFile.Exists)
+            FileInfo toImportFile = new FileInfo(toImport);
+            if (!toImportFile.Exists)
             {
-                Message.PrintLine("Unable to find file to load: {0}", ConsoleColor.Magenta, toLoad);
+                Message.PrintLine("Unable to find file to import: {0}", ConsoleColor.Red, toImport);
                 Exit(1);
             }
             string specifiedVault = GetArgumentOrDefault("vault", "Profile");
             Vault vault = GetTarget(specifiedVault);
 
-            Message.PrintLine("Loading values from {0} into {1}.", ConsoleColor.Cyan, toLoadFile.FullName, ((SQLiteDatabase)vault.Database).DatabaseFile.FullName);
+            Message.PrintLine("Importing values from {0} into {1}.", ConsoleColor.Cyan, toImportFile.FullName, ((SQLiteDatabase)vault.Database).DatabaseFile.FullName);
             
-            Dictionary<string, string> test = toLoadFile.FromFile<Dictionary<string, string>>();
+            Dictionary<string, string> test = toImportFile.FromFile<Dictionary<string, string>>();
             test.Keys.Each(key => vault.Set(key, test[key]));
             if (Arguments.Contains("delete"))
             {
-                toLoadFile.Delete();
+                toImportFile.Delete();
             }
         }
         
