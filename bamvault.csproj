@@ -6,11 +6,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>\opt\bam\build\bamvault\debug\</OutputPath>
+      <OutputPath>\opt\bam\build\debug\bamvault\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>\opt\bam\build\bamvault\release</OutputPath>
+      <OutputPath>\opt\bam\build\release\bamvault\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
