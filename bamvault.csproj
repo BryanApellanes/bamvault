@@ -14,7 +14,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Bam.Net\_lib\bam.net.core\bam.net.core.csproj" />
+      <PackageReference Include="bam.net.core" Version="1.0.6" />
     </ItemGroup>
 
 </Project>
